@@ -1,0 +1,10 @@
+PROJECT=prometheus-dispatcher-exporter
+VERSION=v4.2.0
+PORT=<prometheus exposed port>
+
+DISPATCHER_API=<dispatcher api address>
+
+# POSTGRESQL_ENABLED=true
+# POSTGRESQL_HOST=<host>
+# POSTGRESQL_USER=<user
+# POSTGRESQL_PASSWORD=<password>
