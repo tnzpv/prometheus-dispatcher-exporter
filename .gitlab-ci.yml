@@ -46,7 +46,7 @@ deploy:
     - chmod 700 ~/.ssh
     - echo "$SSH_PRIVATE_KEY" > ~/.ssh/gitlab-ci
     - chmod 600 ~/.ssh/gitlab-ci
-    - ssh-agent -a /tmp/ssh_agent.sock > /dev/null
+    - eval `ssh-agent -s`
     - ssh-add ~/.ssh/gitlab-ci
   script:
     - ssh ${USER}@${HOST} "sed -i '/^VERSION=/c\VERSION=${CI_COMMIT_TAG}' ${DIRECTORY}/env"
