@@ -8,8 +8,12 @@ Metrics are exposed to [Prometheus](https://prometheus.io/).
 Statistics are pushed in a [PostGreSQL](https://www.postgresql.org/) instance.  
 #
 ## Grafana dashboards
-<Post screenshots>
 Dashboards can be found in the `dashboards` directory.  
+
+1. Metrics :
+![img](/.assets/metrics.png)
+2. Stats :
+![img](/.assets/stats.png)
 
 #
 ## Usage
