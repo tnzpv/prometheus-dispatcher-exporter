@@ -40,6 +40,7 @@ deploy:
     - deploy
   before_script:
     - apk add rsync openssh-client
+    - mkdir -p ~/.ssh
     - ssh-keyscan ${HOST} > ~/.ssh/known_hosts
     - mkdir -p ~/.ssh
     - chmod 700 ~/.ssh
