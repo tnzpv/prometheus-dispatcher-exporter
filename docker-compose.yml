@@ -1,0 +1,33 @@
+version: '3.7'
+
+x-base: &base
+  restart: unless-stopped
+  env_file:
+      - ./env
+  networks:
+    - internal
+
+services:
+  prometheus-dispatcher-exporter:
+    <<: *base
+    image: ${REGISTRY}/${PROJECT}:${VERSION}
+    build:
+      context: .
+      args:
+        CI_COMMIT_TAG: ${VERSION}
+    container_name: ${PROJECT}
+    ports:
+      - "${PORT}:9101"
+    volumes:
+      - /etc/timezone:/etc/timezone:ro
+      - /etc/localtime:/etc/localtime:ro
+    environment:
+      DISPATCHER_API: ${DISPATCHER_API}
+      POSTGRESQL_ENABLED: ${POSTGRESQL_ENABLED}
+      POSTGRESQL_HOST: ${POSTGRESQL_HOST}
+      POSTGRESQL_USER: ${POSTGRESQL_USER}
+      POSTGRESQL_PASSWORD: ${POSTGRESQL_PASSWORD}
+
+networks:
+    internal:
+      name: prometheus_dispatcher_exporter
