@@ -79,7 +79,7 @@ If you want to use long term statistics, you must have a PostgreSQL server.
 export VERSION=<current_version>; go build -ldflags="-X 'main.Version=${VERSION}'" -o prometheus-dispatcher-exporter_${VERSION}
 ```
 `VERSION` must be the same as in `env` file.
-3. Build docker image
+3. Build docker image  
 ```
-
+docker compose --env-file env build
 ```
