@@ -9,6 +9,9 @@ Statistics are pushed in a [PostGreSQL](https://www.postgresql.org/) instance.
 #
 ## Grafana dashboards
 Dashboards can be found in the `dashboards` directory.  
+> ***Note on prometheus rules***  
+*To have all [metrics](/dashboards/metrics.json) panels working, you have to install a rule file in your prometheus configuration.
+This rule file can be found in this repository, [alongside of the dashboards json files](/dashboards/dispatcher.rules.yml)*
 
 1. Metrics :
 ![img](/.assets/metrics.png)

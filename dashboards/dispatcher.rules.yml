@@ -1,0 +1,21 @@
+groups:
+  - name: average_task_render_time_per_worker
+    rules:
+    - record: dispatcher_tasks:rendertime:average:per_worker
+      expr: avg(dispatcher_tasks) by (Worker)
+  - name: max_task_render_time_per_worker
+    rules:
+    - record: dispatcher_tasks:rendertime:max:per_worker
+      expr: max(dispatcher_tasks) by (Worker)
+  - name: average_task_render_time_per_job
+    rules:
+    - record: dispatcher_tasks:rendertime:average:per_job
+      expr: avg(dispatcher_tasks) by (Project,JobName,Department,User)
+  - name: max_task_render_time_per_job
+    rules:
+    - record: dispatcher_tasks:rendertime:max:per_job
+      expr: max(dispatcher_tasks) by (Project,JobName,Department,User)
+  - name: dispatcher_tasks_not_completed_per_project
+    rules:
+    - record: dispatcher_tasks:not_completed:per_project
+      expr: count(dispatcher_tasks{Status!="Completed"}) by (Project)
