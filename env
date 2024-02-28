@@ -8,3 +8,5 @@ DISPATCHER_API=<dispatcher api address>
 # POSTGRESQL_HOST=<host>
 # POSTGRESQL_USER=<user
 # POSTGRESQL_PASSWORD=<password>
+
+REGISTRY=<registry address>

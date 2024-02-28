@@ -70,3 +70,16 @@ If you want to use long term statistics, you must have a PostgreSQL server.
 * You have to create a database called like `${POSTGRESQL_DB}` value (`dispatcher` by default)
 * You have to create a user and grant privileges to this database.
 * All environment variable prefixed with `POSTGRESQL` should have a value.
+
+#
+## Build docker image
+1. Set your values in `env` file.
+2. Build `prometheus-dispatcher-exporter binary`
+```
+export VERSION=<current_version>; go build -ldflags="-X 'main.Version=${VERSION}'" -o prometheus-dispatcher-exporter_${VERSION}
+```
+`VERSION` must be the same as in `env` file.
+3. Build docker image
+```
+
+```
