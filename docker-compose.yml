@@ -30,4 +30,4 @@ services:
 
 networks:
     internal:
-      name: prometheus_dispatcher_exporter
+      name: ${PROJECT}
