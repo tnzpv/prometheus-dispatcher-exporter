@@ -29,7 +29,8 @@ This rule file can be found in this repository, [alongside of the dashboards jso
 * `POSTGRESQL_PASSWORD`: postgresql password
 * `POSTGRESQL_PORT`: postgresql port (default 5432)
 * `POSTGRESQL_DB`: postgresql daabase name (default dispatcher)
-* `HEARTBEAT`: sleeping time between each api call in seconds (default 300)
+* `HEARTBEAT_METRICS`: sleeping time between each api call in seconds for metrics (default 300)
+* `HEARTBEAT_STATISTICS`: sleeping time between each api call in seconds for statistics (default 300)
 * `DISPATCHER_API`: dispatcher API address
 
 ### Command line arguments
