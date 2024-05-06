@@ -28,7 +28,7 @@ func getEnv(key, fallback string) string {
 
 
 func main() {
-	log.Printf("Farm Prom starting.")
+	log.Printf("Dispatcher exporter starting.")
 	log.Printf("Registering metrics objects...")
 	prometheus.MustRegister(timeseries.JobMetrics)
 	prometheus.MustRegister(timeseries.TaskMetrics)
@@ -44,7 +44,8 @@ func main() {
 	postgresql_password := getEnv("POSTGRESQL_PASSWORD", "")
 	postgresql_port, _ := strconv.Atoi(getEnv("POSTGRESQL_PORT", "5432"))
 	postgresql_db := getEnv("POSTGRESQL_DB", "dispatcher")
-	heartbeat, _ := strconv.Atoi(getEnv("HEARTBEAT", "300"))
+	heartbeat_metrics, _ := strconv.Atoi(getEnv("HEARTBEAT_METRICS", "300"))
+	heartbeat_statistics, _ := strconv.Atoi(getEnv("HEARTBEAT_STATISTICS", "300"))
 	dispatcher_api := getEnv("DISPATCHER_API", "")
 
 	// command line arguments support (use default values from environment variables)
@@ -60,7 +61,8 @@ func main() {
 	var postgresqlExporterPort = exporterFlag.Int("postgresql-port", postgresql_port, "Postgresql port")
 	var postgresqlExporterDbName = exporterFlag.String("postgresql-dbname", postgresql_db, "Postgresql database name")
 
-	var heartbeatFlag = exporterFlag.Int("heartbeat", heartbeat, "Application heartbeat (seconds)")
+	var heartbeatMetricsFlag = exporterFlag.Int("heartbeat-metrics", heartbeat_metrics, "Metrics heartbeat (seconds)")
+	var heartbeatStatisticsFlag = exporterFlag.Int("heartbeat-statistics", heartbeat_statistics, "Statistics heartbeat (seconds)")
 	
 	var dispatcherApi = exporterFlag.String("dispatcher-api", dispatcher_api, "Dispatcher API host")
 
@@ -78,25 +80,40 @@ func main() {
 
 	go func() {
 		for {
-			log.Printf("Get dispatcher jobs...")
-			jobs := dispatcher_jobs(*dispatcherApi)
-			log.Printf("Get dispatcher jobs... Done.")
-			log.Printf("Get dispatcher workers...")
-			workers := dispatcher_workers(*dispatcherApi)
-			log.Printf("Get dispatcher workers... Done.")
 			if *prometheusExporterEnable {
+				log.Printf("Get dispatcher jobs...")
+				jobs := dispatcher_jobs(*dispatcherApi)
+				log.Printf("Get dispatcher jobs... Done.")
+				log.Printf("Get dispatcher workers...")
+				workers := dispatcher_workers(*dispatcherApi)
+				log.Printf("Get dispatcher workers... Done.")
+
 				log.Printf("Expose jobs and workers for prometheus...")
 				timeseries.IngestMetrics(jobs, workers)
 				log.Printf("Expose jobs and workers for prometheus... Done.")
+				
+				log.Printf("Sleep...")
+				time.Sleep(time.Duration(*heartbeatMetricsFlag) * time.Second)
+				log.Printf("Sleep... Done.")
 			}
+		}
+	}()
+
+	go func() {
+		for {
 			if *postgresqlExporterEnable {
-				log.Printf("Push jobs and workers to postgresql...")
+				log.Printf("Get dispatcher jobs...")
+				jobs := dispatcher_jobs(*dispatcherApi)
+				log.Printf("Get dispatcher jobs... Done.")
+
+				log.Printf("Push jobs to postgresql...")
 				statistics.PushToPsql(jobs, *postgresqlExporterHost, *postgresqlExporterUser, *postgresqlExporterPassword, *postgresqlExporterPort, *postgresqlExporterDbName)
 				log.Printf("Push jobs and workers to postgresql... Done.")
+				
+				log.Printf("Sleep...")
+				time.Sleep(time.Duration(*heartbeatStatisticsFlag) * time.Second)
+				log.Printf("Sleep... Done.")
 			}
-			log.Printf("Sleep...")
-			time.Sleep(time.Duration(*heartbeatFlag) * time.Second)
-			log.Printf("Sleep... Done.")
 		}
 	}()
 
