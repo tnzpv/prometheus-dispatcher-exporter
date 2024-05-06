@@ -18,4 +18,4 @@ groups:
   - name: dispatcher_tasks_not_completed_per_project
     rules:
     - record: dispatcher_tasks:not_completed:per_project
-      expr: count(dispatcher_tasks{Status!="Completed"}) by (Project)
+      expr: count(dispatcher_tasks{Status!~"Completed|Suspended|Failed"}) by (Project)
