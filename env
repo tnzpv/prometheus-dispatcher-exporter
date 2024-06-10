@@ -1,5 +1,5 @@
 PROJECT=prometheus-dispatcher-exporter
-VERSION=v1.2.1
+VERSION=v1.2.3
 PORT=<prometheus exposed port>
 
 DISPATCHER_API=<dispatcher api address>
