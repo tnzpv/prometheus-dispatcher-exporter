@@ -5,7 +5,7 @@ stages:
 
 go:
   stage: build-go
-  image: golang:1.22.4-alpine
+  image: golang:1.22.5-alpine
   tags:
     - build
   before_script:
